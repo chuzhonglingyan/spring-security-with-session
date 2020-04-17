@@ -1,0 +1,39 @@
+server:
+  port: 9091
+  servlet:
+    context-path: /
+
+spring:
+  freemarker:
+    cache: false
+    request-context-attribute: request
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html; charset=utf-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    suffix: .ftl
+    settings:
+      number_format: 0.##
+
+  redis:
+    #redis单机配置
+    host: 127.0.0.1
+    port: 6379
+    # 选择redis的数据库的分库
+    database: 5
+    #redis连接池配置
+    lettuce:
+      pool:
+        max-idle: 8
+        min-idle: 2
+        max-active: 8
+        max-wait: 3000ms
+  session:
+    store-type: redis
+    timeout: PT1M    #默认30M 超时时间
+    #    redis:
+    #      namespace: security-session:session
+    cookie:
+      timeout: PT1M
+
