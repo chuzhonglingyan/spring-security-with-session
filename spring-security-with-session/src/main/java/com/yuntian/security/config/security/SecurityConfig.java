@@ -25,12 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 配置拦截规则
         http.authorizeRequests()
-                .antMatchers("/favicon.ico", "/static/**", "/login", "/userLogin")
+                .antMatchers("/favicon.ico", "/static/**", "/login", "/auth/login")
                 .permitAll()
                 // 任何尚未匹配的URL只需要验证用户即可访问
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("login.html").loginProcessingUrl("/login");
+                .formLogin().loginPage("login");
         //开启记住我功能
         http.rememberMe().rememberMeParameter("rememberMe");
         //最大session并发数量1

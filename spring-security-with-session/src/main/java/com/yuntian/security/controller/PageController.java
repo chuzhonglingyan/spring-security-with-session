@@ -33,9 +33,9 @@ public class PageController {
     /**
      * 登录页
      */
-    @RequestMapping("/userLogin")
+    @RequestMapping("/login")
     public String loginPage (){
-        return "pages/login" ;
+        return "login" ;
     }
     /**
      * page1 下页面

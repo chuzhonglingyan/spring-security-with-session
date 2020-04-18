@@ -33,7 +33,7 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     private boolean postOnly = true;
 
     public LoginAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/login", "POST"));
+        super(new AntPathRequestMatcher("/auth/login", "POST"));
     }
 
     @Override
