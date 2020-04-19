@@ -1,5 +1,8 @@
 package com.yuntian.security.config.security.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.yuntian.security.common.ResultGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -14,14 +17,16 @@ import java.io.PrintWriter;
  * @author guangleilei
  * @description 自定义失败处理器
  */
+@Slf4j
 public class AuthFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        PrintWriter out=response.getWriter();
-        out.write("输出登录成功json");
+        PrintWriter out = response.getWriter();
+        out.write(JSON.toJSONString(ResultGenerator.genFailResult(e.getMessage())));
         out.flush();
         out.close();
+        log.error("登录失败：" + "authentication failed, reason: " + e.getMessage());
     }
 }

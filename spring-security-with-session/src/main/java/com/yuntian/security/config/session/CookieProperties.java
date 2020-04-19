@@ -1,4 +1,4 @@
-package com.yuntian.security.config;
+package com.yuntian.security.config.session;
 
 /**
  * @author yuntian

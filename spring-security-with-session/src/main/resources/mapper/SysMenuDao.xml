@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntian.security.dao.SysMenuDao">
+
+    <resultMap type="com.yuntian.security.model.entity.SysMenu" id="SysMenuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="pid" column="pid" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="componentName" column="component_name" jdbcType="VARCHAR"/>
+        <result property="permission" column="permission" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="visible" column="visible" jdbcType="INTEGER"/>
+        <result property="cache" column="cache" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="isLinked" column="is_linked" jdbcType="INTEGER"/>
+        <result property="createId" column="create_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateId" column="update_id" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysMenuMap">
+        select
+          id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
+        from certificate_authority.sys_menu
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SysMenuMap">
+        select
+          id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
+        from certificate_authority.sys_menu
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SysMenuMap">
+        select
+          id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
+        from certificate_authority.sys_menu
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="pid != null">
+                and pid = #{pid}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="level != null">
+                and level = #{level}
+            </if>
+            <if test="sort != null">
+                and sort = #{sort}
+            </if>
+            <if test="component != null and component != ''">
+                and component = #{component}
+            </if>
+            <if test="componentName != null and componentName != ''">
+                and component_name = #{componentName}
+            </if>
+            <if test="permission != null and permission != ''">
+                and permission = #{permission}
+            </if>
+            <if test="icon != null and icon != ''">
+                and icon = #{icon}
+            </if>
+            <if test="visible != null">
+                and visible = #{visible}
+            </if>
+            <if test="cache != null">
+                and cache = #{cache}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="isLinked != null">
+                and is_linked = #{isLinked}
+            </if>
+            <if test="createId != null">
+                and create_id = #{createId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateId != null">
+                and update_id = #{updateId}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDelete != null">
+                and is_delete = #{isDelete}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into certificate_authority.sys_menu(pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete)
+        values (#{pid}, #{name}, #{path}, #{type}, #{level}, #{sort}, #{component}, #{componentName}, #{permission}, #{icon}, #{visible}, #{cache}, #{status}, #{isLinked}, #{createId}, #{createTime}, #{updateId}, #{updateTime}, #{isDelete})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update certificate_authority.sys_menu
+        <set>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="path != null and path != ''">
+                path = #{path},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="component != null and component != ''">
+                component = #{component},
+            </if>
+            <if test="componentName != null and componentName != ''">
+                component_name = #{componentName},
+            </if>
+            <if test="permission != null and permission != ''">
+                permission = #{permission},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon = #{icon},
+            </if>
+            <if test="visible != null">
+                visible = #{visible},
+            </if>
+            <if test="cache != null">
+                cache = #{cache},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="isLinked != null">
+                is_linked = #{isLinked},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateId != null">
+                update_id = #{updateId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from certificate_authority.sys_menu where id = #{id}
+    </delete>
+
+</mapper>
