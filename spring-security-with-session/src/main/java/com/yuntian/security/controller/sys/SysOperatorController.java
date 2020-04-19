@@ -1,4 +1,4 @@
-package com.yuntian.security.controller;
+package com.yuntian.security.controller.sys;
 
 import com.yuntian.security.model.entity.SysOperator;
 import com.yuntian.security.service.SysOperatorService;

@@ -1,7 +1,9 @@
-package com.yuntian.security.config;
+package com.yuntian.security.common;
 
 import com.yuntian.security.common.ResultGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +31,21 @@ public class GlobalExceptionHandler {
         }
     }
 
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public Object accessDeniedHandle(HttpServletRequest request, HttpServletResponse response, Exception e) {
+        log.error("捕获异常", e);
+        if (isAjax(request)) {
+            return ResultGenerator.genFailResult(HttpStatus.FORBIDDEN.value(),e.getMessage());
+        } else {
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("exception", e);
+            mav.addObject("url", request.getRequestURL());
+            mav.setViewName("/error/403");
+            return  mav;
+        }
+    }
+
+
     public static boolean isAjax(HttpServletRequest httpRequest) {
         return (httpRequest.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(httpRequest.getHeader("X-Requested-With")));
     }
@@ -39,6 +56,9 @@ public class GlobalExceptionHandler {
         mav.addObject("exception", e);
         mav.addObject("url", request.getRequestURL());
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (statusCode==null){
+            statusCode=500;
+        }
         if (statusCode == 401) {
             mav.setViewName("/error/401");
         } else if (statusCode == 404) {

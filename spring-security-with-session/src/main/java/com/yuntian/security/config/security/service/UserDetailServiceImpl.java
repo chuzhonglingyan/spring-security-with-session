@@ -1,4 +1,4 @@
-package com.yuntian.security.service.impl;
+package com.yuntian.security.config.security.service;
 
 import com.yuntian.security.model.entity.SysOperator;
 import com.yuntian.security.service.SysMenuService;
@@ -35,8 +35,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysOperator userInfo = sysOperatorService.getByUserName(username);
-        if (userInfo==null){
-           throw new BadCredentialsException("该用户不存在");
+        if (userInfo == null) {
+            throw new BadCredentialsException("该用户不存在");
         }
         //此处可以验证用户的状态 比如锁定
         List<String> menuList = sysMenuService.getMenuListByUserId(userInfo.getId());

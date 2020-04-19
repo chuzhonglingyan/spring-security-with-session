@@ -35,11 +35,11 @@ spring:
         max-wait: 3000ms
   session:
     store-type: redis
-    timeout: PT2M    #默认30M 超时时间
+    timeout: PT30M    #默认30M 超时时间
     redis:
       namespace: webtest:session
     cookie:
-      timeout: PT2M
+      timeout: PT30M
 
   datasource:
     name: mysql_test

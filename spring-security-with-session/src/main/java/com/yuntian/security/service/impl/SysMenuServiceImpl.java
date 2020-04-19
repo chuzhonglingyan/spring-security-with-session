@@ -83,9 +83,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<String> getMenuListByUserId(Long id) {
         if (id==1){
-             return Stream.of("menu:list","user:list","user:add").collect(Collectors.toList());
+             return Stream.of("ROLE_ADMIN","menu","menu:list","user","user:list","user:add").collect(Collectors.toList());
         }else if (id==2){
-             return Stream.of("user:list","user:add").collect(Collectors.toList());
+             return Stream.of("user","user:list","user:add").collect(Collectors.toList());
         }
         return new ArrayList<>();
     }

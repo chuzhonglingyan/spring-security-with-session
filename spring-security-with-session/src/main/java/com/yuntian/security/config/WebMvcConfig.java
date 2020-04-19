@@ -18,8 +18,7 @@ import javax.annotation.Resource;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Resource
-    private CookieProperties cookieProperties;
+
 
     /**
      * 添加资源拦截器 路径映射真正的目录
@@ -34,14 +33,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
-    CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("SESSION");
-        serializer.setCookieMaxAge((int) cookieProperties.getTimeout().getSeconds());
-        //这样域名相同,同根下的所有web应用就可以轻松实现单点登录共享session
-        serializer.setCookiePath("/");
-        return serializer;
-    }
 
 }

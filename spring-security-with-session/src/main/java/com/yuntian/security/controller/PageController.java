@@ -1,6 +1,6 @@
 package com.yuntian.security.controller;
 
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,11 +28,18 @@ public class PageController {
         return "index";
     }
 
-    @Secured(value = "menu:list")
+    @PreAuthorize("hasAuthority(T(com.yuntian.security.config.security.AuthorityConstants).MENU_VIEW)")
     @RequestMapping("/menu")
     public String menuPage() {
         return "sys/menu";
     }
+
+    @PreAuthorize("hasAuthority(T(com.yuntian.security.config.security.AuthorityConstants).USER_VIEW)")
+    @RequestMapping("/user")
+    public String userPage() {
+        return "sys/user";
+    }
+
 
     @RequestMapping("/login")
     public String loginPage() {
