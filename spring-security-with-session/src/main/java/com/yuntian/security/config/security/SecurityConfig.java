@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         //开启记住我功能
-        http.rememberMe().rememberMeParameter("rememberMe");
+        http.rememberMe().rememberMeParameter("rememberMe").tokenRepository(redisTokenRepository());
         //最大session并发数量1
         http.sessionManagement().maximumSessions(1);
     }
@@ -54,6 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userDetailService())
                 .passwordEncoder(passwordEncoder());
     }
+
+    @Bean
+    public RedisTokenRepositoryImpl redisTokenRepository() {
+        return new RedisTokenRepositoryImpl();
+    }
+
 
     @Bean
     public UserDetailServiceImpl userDetailService() {
