@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.annotation.Resource;
@@ -52,8 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds((int) cookieProperties.getRememberMeTimeout().getSeconds())
                 .userDetailsService(userDetailService())
-//                .and()
-//                .addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 ;
         http.logout().logoutUrl("/logout").deleteCookies("SESSION").deleteCookies("remember-me");
         //最大session并发数量1
@@ -84,16 +81,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    LoginAuthenticationFilter loginAuthenticationFilter() throws Exception {
-//        LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
-//        loginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-//        loginAuthenticationFilter.setAuthenticationSuccessHandler(new AuthSuccessHandler());
-//        loginAuthenticationFilter.setAuthenticationFailureHandler(new AuthFailureHandler());
-//        loginAuthenticationFilter.setRememberMeServices(rememberMeServices());
-//        return loginAuthenticationFilter;
-//    }
 
     @Bean
     @Override

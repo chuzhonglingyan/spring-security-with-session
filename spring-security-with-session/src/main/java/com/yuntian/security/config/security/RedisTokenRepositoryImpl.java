@@ -18,6 +18,7 @@ public class RedisTokenRepositoryImpl implements PersistentTokenRepository {
 
     private final static String USERNAME_KEY = "spring:security:rememberMe:USERNAME_KEY:";
     private final static String SERIES_KEY = "spring:security:rememberMe:SERIES_KEY:";
+
     @Resource
     private RedisTemplate redisTemplate;
 
