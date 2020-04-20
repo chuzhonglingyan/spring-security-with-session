@@ -38,8 +38,10 @@ spring:
     timeout: PT30M    #默认30M 超时时间
     redis:
       namespace: webtest:session
-    cookie:
-      timeout: PT30M
+  cookie:
+    sessionTimeout: PT30M
+    rememberMeTimeout: P1D
+
 
   datasource:
     name: mysql_test

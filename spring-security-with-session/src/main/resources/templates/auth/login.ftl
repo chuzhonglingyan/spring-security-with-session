@@ -29,8 +29,15 @@
             </div>
 
             <div class="form-group">
-                <label style="float:left" class="checkbox-inline i-checks" ><input type="checkbox" name="rememberMe" id="rememberMe" value="1" >  自动登录</label>
-                <label class="checkbox-inline i-checks"  ><input type="checkbox"  name="rememberAccount" id="rememberAccount" value="1">  记住账号</label>
+                <label style="float:left" class="checkbox-inline i-checks">
+                    <input type="checkbox" name="rememberMe"
+                           id="rememberMe"
+                           value="true">自动登录
+                </label>
+                <label class="checkbox-inline i-checks">
+                    <input type="checkbox" name="rememberAccount"
+                           id="rememberAccount" value="true"> 记住账号
+                </label>
             </div>
             <div class="form-group">
                 <button type="button" @click="login()" class="btn btn-primary block full-width m-b">

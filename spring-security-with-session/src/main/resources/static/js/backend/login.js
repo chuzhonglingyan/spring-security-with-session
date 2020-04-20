@@ -11,6 +11,7 @@ new Vue({
     methods: {
         login: function () {
             if (this.validate.form()) {
+                debugger
                 const params = $("#loginForm").serialize();
                 postFormFull(this.loginUrl, params, function (data) {
                     console.debug("登录成功了");
@@ -31,6 +32,9 @@ new Vue({
                         required: true,
                         minlength: 6,
                         maxlength: 20
+                    },
+                    rememberMe: {
+                        required: false,
                     }
                 },
                 messages: {

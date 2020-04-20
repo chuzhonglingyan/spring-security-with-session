@@ -1,5 +1,6 @@
 package com.yuntian.security.config.security;
 
+import freemarker.ext.jsp.TaglibFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -32,6 +33,10 @@ public class ClassPathTldsLoader {
 
     @PostConstruct
     public void loadClassPathTlds() {
-        freeMarkerConfigurer.getTaglibFactory().setClasspathTlds(classPathTlds);
+        TaglibFactory tagLibFactory = freeMarkerConfigurer.getTaglibFactory();
+        if (tagLibFactory.getObjectWrapper()==null) {
+            tagLibFactory.setObjectWrapper(freeMarkerConfigurer.getConfiguration().getObjectWrapper());
+        }
+        tagLibFactory.setClasspathTlds(classPathTlds);
     }
 }

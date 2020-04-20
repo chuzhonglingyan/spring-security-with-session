@@ -2,14 +2,11 @@ package com.yuntian.security.config.security;
 
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,8 +20,13 @@ public class RedisTokenRepositoryImpl implements PersistentTokenRepository {
     private final static String SERIES_KEY = "spring:security:rememberMe:SERIES_KEY:";
     @Resource
     private RedisTemplate redisTemplate;
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+
+    private long exTime = 86400;
+
+
+    public RedisTokenRepositoryImpl(long exTime) {
+        this.exTime = exTime;
+    }
 
     @Override
     public void createNewToken(PersistentRememberMeToken persistentRememberMeToken) {
@@ -41,24 +43,25 @@ public class RedisTokenRepositoryImpl implements PersistentTokenRepository {
         hashMap.put("date", String.valueOf(persistentRememberMeToken.getDate().getTime()));
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         hashOperations.putAll(seriesKey, hashMap);
-        redisTemplate.expire(seriesKey, 1, TimeUnit.DAYS);
+        redisTemplate.expire(seriesKey, exTime, TimeUnit.SECONDS);
 
-        stringRedisTemplate.opsForValue().set(usernameKey, series);
-        redisTemplate.expire(usernameKey, 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(usernameKey, series);
+        redisTemplate.expire(usernameKey, exTime, TimeUnit.SECONDS);
     }
 
     @Override
-    public void updateToken(String s, String s1, Date date) {
-        String key = generateKey(s, SERIES_KEY);
+    public void updateToken(String series, String tokenValue, Date lastUsed) {
+        String key = generateKey(series, SERIES_KEY);
         if (redisTemplate.hasKey(key)) {
-            redisTemplate.opsForHash().put(key, "token", s1);
+            redisTemplate.opsForHash().put(key, "token", tokenValue);
+            redisTemplate.opsForHash().put(key, "date", String.valueOf(lastUsed.getTime()));
         }
     }
 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         String key = generateKey(seriesId, SERIES_KEY);
-        List<String> hashKeys = new ArrayList<>();
+        Collection<String> hashKeys = new ArrayList<>();
         hashKeys.add("username");
         hashKeys.add("token");
         hashKeys.add("date");
@@ -89,7 +92,7 @@ public class RedisTokenRepositoryImpl implements PersistentTokenRepository {
      */
     private void deleteIfPresent(String key) {
         if (redisTemplate.hasKey(key)) {
-            String series = generateKey(stringRedisTemplate.opsForValue().get(key), SERIES_KEY);
+            String series = generateKey((String) redisTemplate.opsForValue().get(key), SERIES_KEY);
             if (series != null && redisTemplate.hasKey(series)) {
                 redisTemplate.delete(series);
                 redisTemplate.delete(key);

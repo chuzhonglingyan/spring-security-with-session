@@ -17,7 +17,7 @@ public class PageController {
      */
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "sys/index";
     }
 
     /**
@@ -25,7 +25,7 @@ public class PageController {
      */
     @RequestMapping("/index")
     public String indexPage() {
-        return "index";
+        return "sys/index";
     }
 
     @PreAuthorize("hasAuthority(T(com.yuntian.security.config.security.AuthorityConstants).MENU_VIEW)")

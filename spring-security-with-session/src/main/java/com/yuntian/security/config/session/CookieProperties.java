@@ -11,10 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-@ConfigurationProperties(prefix="spring.session.cookie")
+@ConfigurationProperties(prefix="spring.cookie")
 @Data
 public class CookieProperties {
 
-    private Duration timeout;
+    private Duration sessionTimeout;
+    private Duration rememberMeTimeout;
 
 }
