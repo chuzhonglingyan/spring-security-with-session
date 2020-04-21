@@ -3,9 +3,7 @@ package com.yuntian.security.config.security.filter;
 import com.yuntian.security.config.jwt.JwtProperties;
 import com.yuntian.security.config.jwt.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,37 +41,33 @@ public class JwtTokenAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String tokenHeader = request.getHeader(jwtProperties.getHeader());
-        if (StringUtils.isBlank(tokenHeader) || !tokenHeader.startsWith(jwtProperties.getTokenPrefix())) {
-            throw new AuthenticationServiceException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        // 如果请求头中没有Authorization信息则直接放行了
+        if (tokenHeader == null || !tokenHeader.startsWith(jwtProperties.getTokenPrefix())) {
+            chain.doFilter(request, response);
+            return;
         }
         String token = tokenHeader.replace(jwtProperties.getTokenPrefix(), "");
-        if (jwtUtil.isTokenExpired(token)) {
-            throw new AuthenticationServiceException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        }
-        String userName = getUsername(token);
-        if (StringUtils.isBlank(userName)) {
-            throw new AuthenticationServiceException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        }
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        // 如果请求头中有token，则进行解析，并且设置认证信息
+        if (SecurityContextHolder.getContext().getAuthentication() == null&&StringUtils.isNotBlank(token)) {
+            String userName = getUsername(token);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null, getAuthorities(token));
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        chain.doFilter(request, response);
+        super.doFilterInternal(request, response, chain);
     }
 
-
     private String getUsername(String token) {
-        return "";
+        return (String) jwtUtil.getTokenClaim(token).get("userName");
     }
 
     private Collection<SimpleGrantedAuthority> getAuthorities(String token) {
         Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<String> authorities = new ArrayList<>();
+        List<String> authorities = (List<String>) jwtUtil.getTokenClaim(token).get("authorityList");
         Objects.requireNonNull(authorities).forEach(authority -> {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         });
-        return null;
+        return grantedAuthorities;
     }
 
 }

@@ -14,4 +14,11 @@ public class JwtProperties {
     private String header;
     private String tokenPrefix;
 
+    public String getTokenPrefix() {
+        return tokenPrefix+" ";
+    }
+
+    public void setTokenPrefix(String tokenPrefix) {
+        this.tokenPrefix = tokenPrefix;
+    }
 }

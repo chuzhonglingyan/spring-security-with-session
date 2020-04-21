@@ -43,7 +43,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
         List<String> authorityList = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         Map<String, Object> param = new HashMap<>();
-        param.put("username", jwtUser.getUsername());
+        param.put("userName", jwtUser.getUsername());
         param.put("authorityList", authorityList);
         String token = jwtUtil.createToken(jwtUser.getUsername(), param);
         // 但是这里创建的token只是单纯的token,按照jwt的规定，最后请求的格式应该是 `Bearer token`

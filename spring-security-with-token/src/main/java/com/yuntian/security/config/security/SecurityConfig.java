@@ -1,5 +1,7 @@
 package com.yuntian.security.config.security;
 
+import com.yuntian.security.config.security.filter.JwtTokenAuthorizationFilter;
+import com.yuntian.security.config.security.handler.AuthEntryPoint;
 import com.yuntian.security.config.security.handler.AuthFailureHandler;
 import com.yuntian.security.config.security.handler.AuthSuccessHandler;
 import com.yuntian.security.config.security.service.UserDetailServiceImpl;
@@ -12,11 +14,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
 import javax.annotation.Resource;
 
 /**
@@ -37,9 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 配置拦截规则
-        http.csrf().disable().formLogin().loginPage("/login").loginProcessingUrl("/auth/login")
+        http.csrf().disable()
+                .cors().and().formLogin().loginPage("/login").loginProcessingUrl("/auth/login")
                 .usernameParameter("userName").passwordParameter("passWord")
-                .successHandler(new AuthSuccessHandler()).failureHandler(new AuthFailureHandler());
+                .successHandler(authSuccessHandler()).failureHandler(authFailureHandler());
         http.authorizeRequests()
                 .antMatchers("/favicon.ico", "/static/**", "/login", "/logout", "/auth/login")
                 .permitAll()
@@ -51,10 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds((int) cookieProperties.getRememberMeTimeout().getSeconds())
                 .userDetailsService(userDetailService())
-                ;
-        http.logout().logoutUrl("/logout").deleteCookies("SESSION").deleteCookies("remember-me");
-        //最大session并发数量1
-        http.sessionManagement().maximumSessions(1);
+                .and()
+                .exceptionHandling().authenticationEntryPoint(authEntryPoint());
+        // 基于token，所以不需要session
+        http .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 禁用缓存
+        http.headers().cacheControl();
+        http.addFilterBefore(jwtTokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.logout().logoutUrl("/logout").deleteCookies("remember-me");
     }
 
     /**
@@ -71,10 +79,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new RedisTokenRepositoryImpl(cookieProperties.getRememberMeTimeout().getSeconds());
     }
 
+    @Bean
+    public AuthEntryPoint authEntryPoint()  {
+        return new AuthEntryPoint();
+    }
+    @Bean
+    public JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter() throws Exception {
+        return new JwtTokenAuthorizationFilter(authenticationManagerBean());
+    }
 
     @Bean
     public UserDetailsService userDetailService() {
         return new UserDetailServiceImpl();
+    }
+
+    @Bean
+    public AuthSuccessHandler authSuccessHandler() {
+        return new AuthSuccessHandler();
+    }
+
+    @Bean
+    public AuthFailureHandler authFailureHandler() {
+        return new AuthFailureHandler();
     }
 
     @Bean

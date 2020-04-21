@@ -1,4 +1,4 @@
-package com.yuntian.security.controller;
+package com.yuntian.security.controller.api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user")
 public class UserController {
 
-
+    
 }
 
 

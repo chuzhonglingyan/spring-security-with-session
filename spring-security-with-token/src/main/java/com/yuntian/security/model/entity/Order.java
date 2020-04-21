@@ -10,13 +10,19 @@ import java.math.BigDecimal;
  * @description
  */
 @Data
-public class GoodSKU {
+public class Order {
 
-    private Long skuId;
+   private Long orderId;
 
-    private String name;
+    private Long userId;
 
-    private BigDecimal price;
+
+    private BigDecimal totalMoney;
+
+
+   private BigDecimal payMoney;
+
+
 
 
 }
