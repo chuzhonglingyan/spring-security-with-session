@@ -1,9 +1,9 @@
 package com.yuntian.webdemo;
 
 import com.alibaba.fastjson.JSON;
-import com.yuntian.security.model.dto.GoodSKUDTO;
-import com.yuntian.security.model.dto.OrderDTO;
-import com.yuntian.security.util.SnowIdUtils;
+import com.yuntian.jwt.model.dto.GoodSKUDTO;
+import com.yuntian.jwt.model.dto.OrderDTO;
+import com.yuntian.jwt.util.SnowIdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

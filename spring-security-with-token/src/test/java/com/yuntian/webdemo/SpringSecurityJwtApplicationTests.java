@@ -1,6 +1,6 @@
 package com.yuntian.webdemo;
 
-import com.yuntian.security.SpringSecurityJwtApplication;
+import com.yuntian.jwt.SpringSecurityJwtApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
