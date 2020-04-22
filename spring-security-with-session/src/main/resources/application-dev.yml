@@ -50,7 +50,7 @@ spring:
     druid:
       #基本属性
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/certificate_authority?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/ca_security?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
       #配置初始化大小/最小/最大

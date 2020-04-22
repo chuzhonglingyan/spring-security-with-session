@@ -17,7 +17,7 @@
     <select id="queryById" resultMap="SysRoleMenuMap">
         select
           id, role_id, menu_id, is_checked, create_id, create_time, update_id, update_time
-        from certificate_authority.sys_role_menu
+        from ca_shrio.sys_role_menu
         where id = #{id}
     </select>
 
@@ -25,7 +25,7 @@
     <select id="queryAllByLimit" resultMap="SysRoleMenuMap">
         select
           id, role_id, menu_id, is_checked, create_id, create_time, update_id, update_time
-        from certificate_authority.sys_role_menu
+        from ca_shrio.sys_role_menu
         limit #{offset}, #{limit}
     </select>
 
@@ -33,7 +33,7 @@
     <select id="queryAll" resultMap="SysRoleMenuMap">
         select
           id, role_id, menu_id, is_checked, create_id, create_time, update_id, update_time
-        from certificate_authority.sys_role_menu
+        from ca_shrio.sys_role_menu
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -64,13 +64,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into certificate_authority.sys_role_menu(role_id, menu_id, is_checked, create_id, create_time, update_id, update_time)
+        insert into ca_shrio.sys_role_menu(role_id, menu_id, is_checked, create_id, create_time, update_id, update_time)
         values (#{roleId}, #{menuId}, #{isChecked}, #{createId}, #{createTime}, #{updateId}, #{updateTime})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update certificate_authority.sys_role_menu
+        update ca_shrio.sys_role_menu
         <set>
             <if test="roleId != null">
                 role_id = #{roleId},
@@ -99,7 +99,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from certificate_authority.sys_role_menu where id = #{id}
+        delete from ca_shrio.sys_role_menu where id = #{id}
     </delete>
 
 </mapper>

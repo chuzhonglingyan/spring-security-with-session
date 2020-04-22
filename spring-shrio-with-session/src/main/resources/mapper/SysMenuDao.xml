@@ -29,7 +29,7 @@
     <select id="queryById" resultMap="SysMenuMap">
         select
           id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
-        from certificate_authority.sys_menu
+        from ca_shrio.sys_menu
         where id = #{id}
     </select>
 
@@ -37,7 +37,7 @@
     <select id="queryAllByLimit" resultMap="SysMenuMap">
         select
           id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
-        from certificate_authority.sys_menu
+        from ca_shrio.sys_menu
         limit #{offset}, #{limit}
     </select>
 
@@ -45,7 +45,7 @@
     <select id="queryAll" resultMap="SysMenuMap">
         select
           id, pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete
-        from certificate_authority.sys_menu
+        from ca_shrio.sys_menu
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -112,13 +112,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into certificate_authority.sys_menu(pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete)
+        insert into ca_shrio.sys_menu(pid, name, path, type, level, sort, component, component_name, permission, icon, visible, cache, status, is_linked, create_id, create_time, update_id, update_time, is_delete)
         values (#{pid}, #{name}, #{path}, #{type}, #{level}, #{sort}, #{component}, #{componentName}, #{permission}, #{icon}, #{visible}, #{cache}, #{status}, #{isLinked}, #{createId}, #{createTime}, #{updateId}, #{updateTime}, #{isDelete})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update certificate_authority.sys_menu
+        update ca_shrio.sys_menu
         <set>
             <if test="pid != null">
                 pid = #{pid},
@@ -183,7 +183,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from certificate_authority.sys_menu where id = #{id}
+        delete from ca_shrio.sys_menu where id = #{id}
     </delete>
 
 </mapper>

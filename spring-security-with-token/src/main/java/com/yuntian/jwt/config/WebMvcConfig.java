@@ -51,6 +51,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         fastJsonConverter.setSupportedMediaTypes(list);
         converters.add(fastJsonConverter);
     }
+    
+    
 
 
 }

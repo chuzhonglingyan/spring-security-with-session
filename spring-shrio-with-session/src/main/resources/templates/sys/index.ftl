@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>
 <html lang="en" >
 <head>
     <#include "../common/head.ftl">

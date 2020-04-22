@@ -56,4 +56,6 @@ public interface SysMenuService {
 
     List<String> getMenuListByUserId(Long id);
 
+    List<String> getMenuListByUserName(String  userName);
+
 }

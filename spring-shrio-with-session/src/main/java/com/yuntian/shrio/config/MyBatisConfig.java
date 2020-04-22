@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @Description:
  */
 @Configuration
-@MapperScan("com.yuntian.security.dao")
+@MapperScan("com.yuntian.shrio.dao")
 public class MyBatisConfig {
 
 

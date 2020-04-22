@@ -28,7 +28,7 @@ import static com.yuntian.jwt.config.redis.RedisKey.JWT_TOKEN_KEY;
 /**
  * @author yuntian
  * @date 2020/3/5 0005 18:20
- * @description 身份认证接口-token认证
+ * @description 身份认证接口-token认证 https://www.jianshu.com/p/2f8b6591a09d
  */
 public class JwtTokenAuthorizationFilter extends BasicAuthenticationFilter {
 

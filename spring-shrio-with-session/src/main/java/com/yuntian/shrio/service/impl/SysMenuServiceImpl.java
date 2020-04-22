@@ -89,4 +89,14 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<String> getMenuListByUserName(String userName) {
+        if (userName.equals("admin")){
+            return Stream.of("ROLE_ADMIN","menu","menu:list","user","user:list","user:add").collect(Collectors.toList());
+        }else if (userName.equals("yuntian")){
+            return Stream.of("user","user:list","user:add").collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
 }

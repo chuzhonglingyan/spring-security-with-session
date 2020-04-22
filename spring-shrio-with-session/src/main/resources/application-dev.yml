@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 9093
   servlet:
     context-path: /
 
@@ -37,7 +37,7 @@ spring:
     store-type: redis
     timeout: PT30M    #默认30M 超时时间
     redis:
-      namespace: webtest:session
+      namespace: shrio-test:session
   cookie:
     sessionTimeout: PT30M
     rememberMeTimeout: P1D
@@ -50,7 +50,7 @@ spring:
     druid:
       #基本属性
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/certificate_authority?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/ca_shrio?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
       #配置初始化大小/最小/最大

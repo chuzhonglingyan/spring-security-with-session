@@ -53,4 +53,7 @@ public interface SysRoleService {
      */
     boolean deleteById(Long id);
 
+
+    List<String> getListByUserName(String  userName);
+
 }

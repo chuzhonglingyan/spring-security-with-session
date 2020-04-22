@@ -3,7 +3,6 @@ package com.yuntian.shrio.config.shiro;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -30,8 +29,10 @@ public class ShiroConfig {
     }
 
     @Bean
-    public Realm realm(){
-        return new ShiroRealm();
+    public ShiroRealm shiroRealm() {
+        ShiroRealm shiroRealm = new ShiroRealm();
+        shiroRealm.setCredentialsMatcher(credentialsMatcher());
+        return shiroRealm;
     }
 
     @Bean
@@ -45,9 +46,13 @@ public class ShiroConfig {
         return credentialsMatcher;
     }
 
+    @Bean
+    public ShrioHashUtil shrioHashUtil() {
+        return new ShrioHashUtil(credentialsMatcher());
+    }
 
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm);
         securityManager.setSessionManager(sessionManager());
@@ -68,13 +73,14 @@ public class ShiroConfig {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         chainDefinition.addPathDefinition("/static/**", "anon");
         chainDefinition.addPathDefinition("/favicon.ico", "anon");
-        chainDefinition.addPathDefinition("/login.html", "anon");
+        chainDefinition.addPathDefinition("/login", "anon");
+        chainDefinition.addPathDefinition("/auth/login", "anon");
+        chainDefinition.addPathDefinition("/auth/loginOut", "anon");
         chainDefinition.addPathDefinition("/swagger-ui.html", "anon");
         chainDefinition.addPathDefinition("/swagger-resources/**", "anon");
         chainDefinition.addPathDefinition("/**", "authc");
         return chainDefinition;
     }
-
 
 
     /**

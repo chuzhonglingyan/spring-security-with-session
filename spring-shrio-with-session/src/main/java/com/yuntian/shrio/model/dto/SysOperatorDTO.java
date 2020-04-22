@@ -16,4 +16,6 @@ public class SysOperatorDTO extends SysOperator {
     private static final long serialVersionUID = 715289452385406227L;
 
 
+    private boolean rememberMe;
+
 }

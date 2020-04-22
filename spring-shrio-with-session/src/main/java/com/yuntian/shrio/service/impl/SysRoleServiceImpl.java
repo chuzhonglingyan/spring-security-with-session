@@ -6,7 +6,10 @@ import com.yuntian.shrio.service.SysRoleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 后台系统-角色表(SysRole)表服务实现类
@@ -75,5 +78,15 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public boolean deleteById(Long id) {
         return this.sysRoleDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<String> getListByUserName(String userName) {
+        if (userName.equals("admin")){
+            return Stream.of("admin").collect(Collectors.toList());
+        }else if (userName.equals("yuntian")){
+            return Stream.of("test").collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }
