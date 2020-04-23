@@ -1,8 +1,10 @@
 package com.yuntian.shrio.common;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @description
  */
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
 
@@ -23,6 +25,16 @@ public class GlobalExceptionHandler {
         log.error("捕获异常", e);
         if (isAjax(request)) {
             return ResultGenerator.genFailResult(e.getMessage());
+        } else {
+            return getErrorPage(request, e);
+        }
+    }
+
+    @ExceptionHandler(value = UnauthorizedException.class)
+    public Object handle(HttpServletRequest request, UnauthorizedException e) {
+        log.error("捕获异常", e);
+        if (isAjax(request)) {
+            return ResultGenerator.genFailResult(HttpStatus.FORBIDDEN.value(),e.getMessage());
         } else {
             return getErrorPage(request, e);
         }

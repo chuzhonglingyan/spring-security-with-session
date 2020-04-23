@@ -49,4 +49,9 @@ public class PageController {
     }
 
 
+    @RequestMapping("/logout")
+    public String logout() {
+        SecurityUtils.getSubject().logout();
+        return "auth/login";
+    }
 }

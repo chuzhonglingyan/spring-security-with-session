@@ -35,7 +35,7 @@ public class ResultGenerator {
 
     public static Result genFailResult(String message) {
         return new Result()
-                .setCode(ResultCode.FAIL)
+                .setCode(ResultCode.INTERNAL_SERVER_ERROR)
                 .setState(Result.FAIL)
                 .setSuccess(false)
                 .setMessage(message);

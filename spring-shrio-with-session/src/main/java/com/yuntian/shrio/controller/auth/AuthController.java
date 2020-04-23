@@ -33,10 +33,10 @@ public class AuthController extends BaseController {
         return new Result();
     }
 
-    @RequestMapping(value = "loginOut")
+    @RequestMapping(value = "logout")
     public Result loginOut(SysOperatorDTO dto) {
         SecurityUtils.getSubject().logout();
-        return new Result();
+        return ResultGenerator.genSuccessResult();
     }
 
 

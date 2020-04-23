@@ -3,8 +3,10 @@ package com.yuntian.shrio.controller.sys;
 
 import com.yuntian.shrio.common.Result;
 import com.yuntian.shrio.common.ResultGenerator;
+import com.yuntian.shrio.config.shiro.AuthorityConstants;
 import com.yuntian.shrio.model.dto.SysMenuDTO;
 import com.yuntian.shrio.service.SysMenuService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +27,10 @@ public class SysMenuController {
     @Resource
     private SysMenuService sysMenuService;
 
+    @RequiresPermissions(value = {AuthorityConstants.MENU_ADD})
     @RequestMapping("add")
     public Result add(SysMenuDTO dto) {
         return ResultGenerator.genSuccessResult();
     }
-
 
 }

@@ -2,16 +2,19 @@ package com.yuntian.shrio.config.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 @Configuration
 public class ShiroConfig {
@@ -69,17 +72,22 @@ public class ShiroConfig {
 
 
     @Bean
-    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        chainDefinition.addPathDefinition("/static/**", "anon");
-        chainDefinition.addPathDefinition("/favicon.ico", "anon");
-        chainDefinition.addPathDefinition("/login", "anon");
-        chainDefinition.addPathDefinition("/auth/login", "anon");
-        chainDefinition.addPathDefinition("/auth/loginOut", "anon");
-        chainDefinition.addPathDefinition("/swagger-ui.html", "anon");
-        chainDefinition.addPathDefinition("/swagger-resources/**", "anon");
-        chainDefinition.addPathDefinition("/**", "authc");
-        return chainDefinition;
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
+        ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
+        bean.setSecurityManager(securityManager);
+        bean.setLoginUrl("/login");
+        bean.setSuccessUrl("/index");
+        HashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/auth/login", "anon");
+        filterChainDefinitionMap.put("/auth/loginOut", "anon");
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
+        bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        return bean;
     }
 
 
