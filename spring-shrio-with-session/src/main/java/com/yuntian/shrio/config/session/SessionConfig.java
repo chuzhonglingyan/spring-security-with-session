@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
+import javax.annotation.Resource;
+
 /**
  * @author Administrator
  * @date 2020-04-19 22:18
@@ -13,8 +15,11 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 @Configuration
 public class SessionConfig {
 
+    @Resource
+    private  CookieProperties cookieProperties;
+
     @Bean
-    CookieSerializer cookieSerializer(CookieProperties cookieProperties) {
+    CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("SESSION");
         serializer.setCookieMaxAge((int) cookieProperties.getSessionTimeout().getSeconds());

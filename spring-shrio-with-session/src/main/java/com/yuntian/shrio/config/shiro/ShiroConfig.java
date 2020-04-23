@@ -1,24 +1,30 @@
 package com.yuntian.shrio.config.shiro;
 
+import com.yuntian.shrio.config.session.CookieProperties;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 @Configuration
 public class ShiroConfig {
+
 
     /**
      * ServletContainerSessionManager 类中有一个方法是isServletContainerSessions()，返回的是true.
@@ -33,12 +39,13 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm,CookieProperties cookieProperties) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm);
         securityManager.setSessionManager(sessionManager());
         // 自定义缓存实现 使用redis
         securityManager.setCacheManager(cacheManagers());
+        securityManager.setRememberMeManager(rememberMeManager(cookieProperties));
         return securityManager;
     }
 
@@ -78,10 +85,28 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * @return
+     */
+    /**
+     * cookie管理对象;
+     * @return
+     */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(ShiroRealm shiroRealm) {
+    public CookieRememberMeManager rememberMeManager(CookieProperties cookieProperties){
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        simpleCookie.setMaxAge((int) cookieProperties.getRememberMeTimeout().getSeconds());
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(simpleCookie);
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode(cookieProperties.getRememberMeCipherKey()));
+        return cookieRememberMeManager;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(ShiroRealm shiroRealm,CookieProperties cookieProperties) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager(shiroRealm));
+        advisor.setSecurityManager(securityManager(shiroRealm,cookieProperties));
         return advisor;
     }
 

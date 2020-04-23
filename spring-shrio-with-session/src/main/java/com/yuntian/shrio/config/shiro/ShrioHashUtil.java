@@ -5,11 +5,11 @@ import org.apache.shiro.authc.SaltedAuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.hash.Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.security.SecureRandom;
 
@@ -32,7 +32,7 @@ public class ShrioHashUtil  {
         if (hashedCredentialsMatcher.isStoredCredentialsHexEncoded()) {
             pwdHashStr = Hex.encodeToString(hashPassWord.getBytes());
         } else {
-            pwdHashStr = Base64.encodeBase64String(hashPassWord.getBytes());
+            pwdHashStr =  Base64.encodeToString(hashPassWord.getBytes());
         }
         return pwdHashStr;
     }
@@ -53,7 +53,7 @@ public class ShrioHashUtil  {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[15];
         random.nextBytes(bytes);
-        return Base64.encodeBase64String(bytes);
+        return Base64.encodeToString(bytes);
     }
 
 }

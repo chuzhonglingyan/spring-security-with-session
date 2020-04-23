@@ -8,6 +8,7 @@ package com.yuntian.shrio.config.session;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
@@ -17,5 +18,6 @@ public class CookieProperties {
 
     private Duration sessionTimeout;
     private Duration rememberMeTimeout;
+    private String rememberMeCipherKey;
 
 }

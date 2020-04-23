@@ -32,6 +32,14 @@
         where id = #{id}
     </select>
 
+    <!--查询单个条件-->
+    <select id="queryByUserNme" resultMap="SysOperatorMap">
+        select
+        <include refid="resultSql"/>
+        from sys_operator
+        where user_name = #{userNme}  and is_delete=0
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysOperatorMap">
         select

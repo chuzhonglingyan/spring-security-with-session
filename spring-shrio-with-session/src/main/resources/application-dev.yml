@@ -41,6 +41,7 @@ spring:
   cookie:
     sessionTimeout: PT30M
     rememberMeTimeout: P1D
+    rememberMeCipherKey: 2AvVhdsgUs0FSA3SDFAdag==
 
 
   datasource:
