@@ -12,27 +12,30 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <sql id="resultSql">
+          id, user_id, role_id, create_id, create_time, update_id, update_time    </sql>
+    
     <!--查询单个-->
     <select id="queryById" resultMap="SysOperatorRoleMap">
         select
-          id, user_id, role_id, create_id, create_time, update_id, update_time
-        from ca_shrio.sys_operator_role
+         <include refid="resultSql"/>
+        from sys_operator_role
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysOperatorRoleMap">
         select
-          id, user_id, role_id, create_id, create_time, update_id, update_time
-        from ca_shrio.sys_operator_role
+         <include refid="resultSql"/>
+        from sys_operator_role
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="SysOperatorRoleMap">
         select
-          id, user_id, role_id, create_id, create_time, update_id, update_time
-        from ca_shrio.sys_operator_role
+          <include refid="resultSql"/>
+        from sys_operator_role
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -60,13 +63,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into ca_shrio.sys_operator_role(user_id, role_id, create_id, create_time, update_id, update_time)
+        insert into sys_operator_role(user_id, role_id, create_id, create_time, update_id, update_time)
         values (#{userId}, #{roleId}, #{createId}, #{createTime}, #{updateId}, #{updateTime})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update ca_shrio.sys_operator_role
+        update sys_operator_role
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -92,7 +95,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from ca_shrio.sys_operator_role where id = #{id}
+        delete from sys_operator_role where id = #{id}
     </delete>
 
 </mapper>
