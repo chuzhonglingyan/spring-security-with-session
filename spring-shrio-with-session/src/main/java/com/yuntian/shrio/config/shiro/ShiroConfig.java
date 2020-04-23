@@ -1,17 +1,18 @@
 package com.yuntian.shrio.config.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
-import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,11 +33,33 @@ public class ShiroConfig {
     }
 
     @Bean
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(shiroRealm);
+        securityManager.setSessionManager(sessionManager());
+        // 自定义缓存实现 使用redis
+        securityManager.setCacheManager(cacheManagers());
+        return securityManager;
+    }
+
+
+    @Bean
     public ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
         shiroRealm.setCredentialsMatcher(credentialsMatcher());
         return shiroRealm;
     }
+
+    @Bean
+    RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory();
+    }
+
+    @Bean
+    public CacheManager cacheManagers() {
+        return new ReidsCachesMager<>(redisConnectionFactory());
+    }
+
 
     @Bean
     public HashedCredentialsMatcher credentialsMatcher() {
@@ -52,14 +75,6 @@ public class ShiroConfig {
     @Bean
     public ShrioHashUtil shrioHashUtil() {
         return new ShrioHashUtil(credentialsMatcher());
-    }
-
-    @Bean
-    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(shiroRealm);
-        securityManager.setSessionManager(sessionManager());
-        return securityManager;
     }
 
 

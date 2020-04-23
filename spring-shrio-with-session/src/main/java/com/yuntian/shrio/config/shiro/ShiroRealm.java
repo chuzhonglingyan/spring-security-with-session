@@ -4,11 +4,15 @@ import com.yuntian.shrio.model.entity.SysOperator;
 import com.yuntian.shrio.service.SysMenuService;
 import com.yuntian.shrio.service.SysOperatorService;
 import com.yuntian.shrio.service.SysRoleService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
@@ -46,5 +50,24 @@ public class ShiroRealm extends AuthorizingRealm {
         authorizationInfo.setStringPermissions(new HashSet<>(menuList));
         return authorizationInfo;
     }
+
+
+
+    @Override
+    public AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
+       return super.getAuthorizationInfo(principals);
+    }
+
+    @Override
+    protected String getAuthorizationCacheKey(PrincipalCollection principals) {
+        return principals.getPrimaryPrincipal().toString();
+    }
+
+    @Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+
 
 }
