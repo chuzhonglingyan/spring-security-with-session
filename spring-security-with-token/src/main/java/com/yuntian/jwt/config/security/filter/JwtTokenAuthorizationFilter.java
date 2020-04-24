@@ -64,19 +64,17 @@ public class JwtTokenAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
+        //验证token是否删除
         String tokenRedis = redisManage.getValue(JWT_TOKEN_KEY + token);
         if (StringUtils.isEmpty(tokenRedis)) {
             chain.doFilter(request, response);
             return;
         }
-
         // 如果请求头中有token，则进行解析，并且设置认证信息
         String userName = getUsername(claims);
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null, getAuthorities(claims));
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null, getAuthorities(claims));
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         super.doFilterInternal(request, response, chain);
     }
 
