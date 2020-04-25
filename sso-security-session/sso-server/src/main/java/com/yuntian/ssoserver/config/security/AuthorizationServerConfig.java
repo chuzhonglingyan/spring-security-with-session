@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author yuntian
  * @date 2020/3/17 0017 23:52
- * @description
+ * @description 认证服务器
  */
 @Configuration
 @EnableAuthorizationServer
