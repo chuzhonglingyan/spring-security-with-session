@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 8088
   servlet:
     context-path: /
 
@@ -33,15 +33,6 @@ spring:
         min-idle: 2
         max-active: 8
         max-wait: 3000ms
-  session:
-    store-type: redis
-    timeout: PT30M    #默认30M 超时时间
-    redis:
-      namespace: webtest:session
-  cookie:
-    sessionTimeout: PT30M
-    rememberMeTimeout: P1D
-
 
   datasource:
     name: mysql_test
@@ -73,13 +64,6 @@ spring:
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
 
-  security:
-    oauth2:
-      client:
-        registration:
-          sso-client-2:
-            clientId: sso-client-2-client-id
-            clientSecret: sso-client-2-client-secret
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -90,3 +74,18 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count:countSql
+
+auth-server: http://sso.yuntian.com:8085
+
+security:
+  oauth2:
+    client:
+      client-id: appWeb2
+      client-secret: 123456
+      user-authorization-uri: ${auth-server}/oauth/authorize
+      access-token-uri: ${auth-server}/oauth/token
+    resource:
+      jwt:
+        key-uri: ${auth-server}/oauth/token_key
+
+

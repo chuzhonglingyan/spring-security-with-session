@@ -1,7 +1,8 @@
 server:
-  port: 9091
+  port: 8085
   servlet:
-    context-path: /
+    context-path:
+
 
 spring:
   freemarker:
@@ -12,6 +13,7 @@ spring:
     content-type: text/html; charset=utf-8
     expose-request-attributes: true
     expose-session-attributes: true
+    allow-session-override : true   #设置允许session被重写
     suffix: .ftl
     settings:
       number_format: 0.##
@@ -37,10 +39,7 @@ spring:
     store-type: redis
     timeout: PT30M    #默认30M 超时时间
     redis:
-      namespace: webtest:session
-  cookie:
-    sessionTimeout: PT30M
-    rememberMeTimeout: P1D
+      namespace: sso-test:session
 
 
   datasource:
@@ -72,6 +71,8 @@ spring:
       #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
+
+
 
 
 
