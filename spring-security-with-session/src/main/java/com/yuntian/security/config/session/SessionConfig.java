@@ -20,6 +20,7 @@ public class SessionConfig {
         serializer.setCookieMaxAge((int) cookieProperties.getSessionTimeout().getSeconds());
         //这样域名相同,同根下的所有web应用就可以轻松实现单点登录共享session
         serializer.setCookiePath("/");
+        serializer.setDomainName("yuntian.com");
         return serializer;
     }
 }
